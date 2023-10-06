@@ -1,0 +1,1610 @@
+﻿/*
+=====================================================================
+  UNTITLED GLOVEPIE GAME
+=====================================================================
+--- HOW TO PLAY ---
+In this untitled GlovePIE game, you take control of Otie and try to
+get through as many levels as you can whilst racking up points.
+
+
+--- CONTROLS ---
+Arrows - Move
+Z      - Jump
+X      - Shoot
+
+
+--- ENEMIES ---
+Zombie
+They look like Otie, but they're green instead of cyan. They'll
+slowly trudge towards Otie and bite them when they get close enough.
+Can be defeated with 3 gunshots.
+
+Turretank
+Shoots small bullets at Otie that continuously travel in the same
+direction until they collide with something. Can be defeated with
+2 gunshots.
+
+Bumerang
+Shoots U-shaped boomerangs towards Otie from a certain distance and runs away if they get too close. Can be defeated with 3 gunshots.
+
+
+--- NOTES / TROUBLESHOOTING ---
+Be sure to always keep GlovePIE on screen and in focus at all times
+while the game is running, otherwise the game might slow down and/or
+interfere with your computer or other programs.
+
+The game will slow down a lot if you have too many other things
+running in the background, GlovePIE by itself is somewhat greedy in
+terms of performance and it wasn't exactly built to run games.
+
+If fake cursors show up during gameplay, it's most likely because
+you didn't open the program correctly. Try closing GlovePIE and
+re-opening the game directly by doule-clicking the .PIE file
+via File Explorer. (DON'T OPEN IT VIA SHORTCUTS OR FILE EXPLORER'S
+HOME MENU)
+
+
+--- CREDITS ---
+Game made by CosmicTailz
+
+Tools Used:
+   Audacity (Music / SFX)
+   cursor.cc (...duh)
+   FamiTracker (Music / SFX)
+   My brain (All of the above and more)
+
+*/
+
+
+
+// WARNING: EVERYTHING BELOW THESE LINES IS PART OF THE GAME'S CODE.
+
+// GLOVEPIE IS CAPABLE OF MESSING WITH WINDOWS IN CERTAIN WAYS, SO
+// DON'T EDIT ANYTHING UNLESS YOU 100% KNOW WHAT YOU'RE DOING!!!
+
+
+
+// CONTROL
+var.cUp = key.Up
+var.cDown = key.Down
+var.cLeft = key.Left
+var.cRight = key.Right
+
+var.cJump = key.Z
+var.cShoot = key.X
+
+
+// SETUP
+if not var.setupComplete then
+   cam.BgColour = 0x000000
+   maximizePie
+   var.topBarrier = (screen.Height / 2) - 180
+   var.bottomBarrier = (screen.Height / 2) + 180
+   var.leftBarrier = (screen.Width / 2) - 240
+   var.rightBarrier = (screen.Width / 2) + 240
+   playSound "./assets/sfx/nothing.wav"
+
+   cursor8.Visible = false
+   cursor14.Visible = false
+   cursor20.Visible = false
+   cursor26.Visible = false
+
+   cursor5.Visible = false
+   cursor11.Visible = false
+   cursor17.Visible = false
+   cursor23.Visible = false
+
+   cursor3.Visible = false
+   cursor9.Visible = false
+   cursor15.Visible = false
+   cursor21.Visible = false
+
+   cursor6.Visible = false
+
+   cursor10.Visible = false
+   cursor16.Visible = false
+   cursor22.Visible = false
+   cursor28.Visible = false
+
+   cursor34.Visible = false
+   cursor40.Visible = false
+
+
+
+   cursor0.Visible = false
+   cursor0.WhiteColour = 0x000000
+
+   cursor1.Visible = false
+   cursor1.Image = "./assets/graphics/empty.cur"
+   cursor1.Caption = "_"
+
+   cursor2.Visible = false
+   cursor32.Visible = false
+
+   cursor4.Visible = false
+   cursor4.WhiteColour = 0x000000
+
+
+   cursor0.PosX = (screen.Width / 2) - 100
+   cursor0.PosY = 0
+   cursor0.Caption = "COSMICTAILZ PRESENTS"
+
+   wait 1s
+
+   cursor0.Visible = true
+   var.logoEasing = 200
+   var.eventEaseLogo = true
+
+   wait 5s
+
+   cursor4.PosX = (screen.Width / 2) - 107
+   cursor4.PosY = (screen.Height / 2) - 30
+   cursor4.Caption = "UNTITLED GLOVEPIE GAME"
+   cursor4.Visible = true
+
+   cursor0.PosX = (screen.Width / 2) - 107
+   cursor0.PosY = (screen.Height / 2)
+   cursor0.Caption = "Press Z to begin"
+
+   var.setupComplete = true
+end
+
+
+// TITLE MUSIC
+if var.setupComplete and not var.gameActive and not var.gameOver then
+   playSound "./assets/sfx/title.wav"
+   wait 6400ms
+end
+
+
+// GAME START
+if var.setupComplete then
+   if var.gameActive = false and var.gameOver = false then
+      if key.Z then
+         var.playerX = screen.Width / 2
+         var.playerY = screen.Height / 2
+         var.jumpActive = false
+         var.health = 5
+
+         cursor1.Visible = true
+
+         cursor4.Image = "./assets/graphics/empty.cur"
+         cursor4.Caption = "SCORE:
+HEALTH:"
+         cursor4.PosX = (screen.Width / 2) - 240
+         cursor4.PosY = (screen.Height / 2) + 180
+
+         cursor2.Visible = true
+         cursor2.Image = "./assets/graphics/empty.cur"
+         cursor2.PosX = (screen.Width / 2) - 185
+         cursor2.PosY = (screen.Height / 2) + 193
+
+         cursor32.Visible = true
+         cursor32.Image = "./assets/graphics/empty.cur"
+         cursor32.PosX = (screen.Width / 2) - 185
+         cursor32.PosY = (screen.Height / 2) + 180
+
+         playSound "./assets/sfx/nothing.wav"
+
+         var.newLevelStart = true
+         var.score = 0
+         var.level = 0
+
+         cursor0.Caption = "o
+T"
+         cursor8.Caption = ":o:"
+         cursor14.Caption = ":o:"
+         cursor20.Caption = ":o:"
+         cursor26.Caption = ":o:"
+         cursor5.Caption = "+
+T"
+         cursor11.Caption = "+
+T"
+         cursor17.Caption = "+
+T"
+         cursor23.Caption = "+
+T"
+         cursor3.Caption = "o
+T"
+         cursor9.Caption = "o
+T"
+         cursor15.Caption = "o
+T"
+         cursor21.Caption = "o
+T"
+         cursor34.Caption = "U"
+         cursor40.Caption = "U"
+
+         var.gameActive = true
+      end
+   end
+end
+
+
+// LOGO EASING
+if var.eventEaseLogo then
+   if var.logoEasing > 30 then
+      cursor0.PosY = (screen.Height / 2) - var.LogoEasing
+      var.logoEasing--
+   else
+       var.eventEaseLogo = false
+       playSound "./assets/sfx/logo.wav"
+   end
+end
+
+
+// MAIN GAME CODE
+if var.gameActive then
+
+
+//---------- Control
+   if var.cUp and var.playerY > var.topBarrier then
+      var.playerY = var.playerY - 2
+      var.playerDirY = 1
+      if (not var.cLeft) and (not var.cRight) then
+         var.playerDirX = 0
+      end
+   end
+   if var.cDown and var.playerY < var.bottomBarrier then
+      var.playerY = var.playerY + 2
+      var.playerDirY = -1
+      if (not var.cLeft) and (not var.cRight) then
+         var.playerDirX = 0
+      end
+   end
+   if var.cLeft and var.playerX > var.leftBarrier then
+      var.playerX = var.playerX - 2
+      var.playerDirX = -1
+      if (not var.cUp) and (not var.cDown) then
+         var.playerDirY = 0
+      end
+   end
+   if var.cRight and var.playerX < var.rightBarrier then
+      var.playerX = var.playerX + 2
+      var.playerDirX = 1
+      if (not var.cUp) and (not var.cDown) then
+         var.playerDirY = 0
+      end
+   end
+
+   if var.jumpActive then
+      if var.jumpVelocity > -10 then
+         var.playerAir = var.playerAir + var.jumpVelocity
+         var.jumpVelocity--
+         wait 1ms
+      else
+          var.jumpActive = false
+      end
+   else
+       var.jumpVelocity = 10
+       var.playerAir = 0
+       if var.cJump then
+          playSound "./assets/sfx/jump.wav"
+          var.jumpActive = true
+       end
+   end
+
+   if var.cShoot then
+      if (not var.pb1Active) and (not var.jumpActive) then
+         var.pb1X = var.playerX
+         var.pb1Y = var.playerY
+         if var.playerDirY = 1 and var.playerDirX = 0 then
+            var.pb1Dir = 0
+         end
+         if var.playerDirY = 1 and var.playerDirX = 1 then
+            var.pb1Dir = 1
+         end
+         if var.playerDirY = 0 and var.playerDirX = 1 then
+            var.pb1Dir = 2
+         end
+         if var.playerDirY = -1 and var.playerDirX = 1 then
+            var.pb1Dir = 3
+         end
+         if var.playerDirY = -1 and var.playerDirX = 0 then
+            var.pb1Dir = 4
+         end
+         if var.playerDirY = -1 and var.playerDirX = -1 then
+            var.pb1Dir = 5
+         end
+         if var.playerDirY = 0 and var.playerDirX = -1 then
+            var.pb1Dir = 6
+         end
+         if var.playerDirY = 1 and var.playerDirX = -1 then
+            var.pb1Dir = 7
+         end
+         var.pb1Active = true
+         playSound "./assets/sfx/shoot.wav"
+         wait 0.3s
+      end
+   end
+//----------
+
+
+//---------- Health/Score Display
+   cursor32.Caption = var.score
+
+   if var.Health = 5 then
+      cursor2.Caption = "♥♥♥♥♥"
+   end
+   if var.Health = 4 then
+      cursor2.Caption = "♥♥♥♥ "
+   end
+   if var.Health = 3 then
+      cursor2.Caption = "♥♥♥  "
+   end
+   if var.Health = 2 then
+      cursor2.Caption = "♥♥   "
+   end
+   if var.Health = 1 then
+      cursor2.Caption = "♥    "
+   end
+   if var.Health = 0 then
+      cursor2.Caption = "GAME OVER"
+      var.gameActive = false
+      var.gameOver = true
+
+   end
+//----------
+
+
+//---------- Player mapping
+   cursor0.PosX = var.playerX
+   cursor0.PosY = var.playerY - var.playerAir
+   cursor0.Image = "./assets/graphics/empty.cur"
+
+   cursor1.PosX = var.playerX
+   cursor1.PosY = var.playerY + 13
+
+   var.playerHitboxX = var.playerX + 12
+   var.playerHitboxY = var.playerY + 20
+//----------
+
+
+//---------- Entity mapping
+// Turretank 1
+   cursor8.Image = "./assets/graphics/empty.cur"
+   cursor8.Visible = var.tt1Active
+
+   if var.tt1Active then
+      cursor8.PosX = var.tt1X
+      cursor8.PosY = var.tt1Y
+
+      if var.tt1Dir = 1 then
+
+         if (var.tt1X + 16) < var.playerHitboxX then
+            var.tt1X = var.tt1X + 1
+         end
+         if (var.tt1X + 16) > var.playerHitboxX then
+            var.tt1X = var.tt1X - 1
+         end
+
+         if var.nbu1Active = false then
+            if sameValue(var.playerHitboxX, (var.tt1X + 16), 20) then
+               var.nbu1X = var.tt1X + 8
+               var.nbu1Y = var.tt1Y
+
+               if (var.tt1Y + 10) <= var.playerHitboxY then
+                  var.nbu1Dir = 3
+               end
+               if (var.tt1Y + 10) > var.playerHitboxY then
+                  var.nbu1Dir = 1
+               end
+               var.nbu1Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+
+      end
+      if var.tt1Dir = 2 then
+
+         if (var.tt1Y + 16) <= var.playerHitboxY then
+            var.tt1Y = var.tt1Y + 1
+         end
+         if (var.tt1Y + 16) > var.playerHitboxY then
+            var.tt1Y = var.tt1Y - 1
+         end
+
+         if var.nbu1Active = false then
+            if sameValue(var.playerHitboxY, (var.tt1Y + 12), 20) then
+               var.nbu1X = var.tt1X + 8
+               var.nbu1Y = var.tt1Y
+
+               if (var.tt1X + 16) < var.playerHitboxX then
+                  var.nbu1Dir = 2
+               end
+               if (var.tt1X + 16) > var.playerHitboxX then
+                  var.nbu1Dir = 4
+               end
+               var.nbu1Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.tt1X, 20) and sameValue(var.pb1Y, var.tt1Y, 20) then
+            var.tt1Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/tankhurt.wav"
+            var.pb1Active = false
+            if var.tt1Health <= 0 then
+               var.tt1Active = false
+               var.turretankCount--
+               var.score = var.score + 1500
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+// Turretank 2
+   cursor14.Image = "./assets/graphics/empty.cur"
+   cursor14.Visible = var.tt2Active
+
+   if var.tt2Active then
+      cursor14.PosX = var.tt2X
+      cursor14.PosY = var.tt2Y
+
+      if var.tt2Dir = 1 then
+
+         if (var.tt2X + 16) < var.playerHitboxX then
+            var.tt2X = var.tt2X + 1
+         end
+         if (var.tt2X + 16) > var.playerHitboxX then
+            var.tt2X = var.tt2X - 1
+         end
+
+         if var.nbu2Active = false then
+            if sameValue(var.playerHitboxX, (var.tt2X + 16), 20) then
+               var.nbu2X = var.tt2X + 8
+               var.nbu2Y = var.tt2Y
+
+               if (var.tt2Y + 10) <= var.playerHitboxY then
+                  var.nbu2Dir = 3
+               end
+               if (var.tt2Y + 10) > var.playerHitboxY then
+                  var.nbu2Dir = 1
+               end
+               var.nbu2Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+
+      end
+      if var.tt2Dir = 2 then
+
+         if (var.tt2Y + 16) <= var.playerHitboxY then
+            var.tt2Y = var.tt2Y + 1
+         end
+         if (var.tt2Y + 16) > var.playerHitboxY then
+            var.tt2Y = var.tt2Y - 1
+         end
+
+         if var.nbu2Active = false then
+            if sameValue(var.playerHitboxY, (var.tt2Y + 12), 20) then
+               var.nbu2X = var.tt2X + 8
+               var.nbu2Y = var.tt2Y
+
+               if (var.tt2X + 16) < var.playerHitboxX then
+                  var.nbu2Dir = 2
+               end
+               if (var.tt2X + 16) > var.playerHitboxX then
+                  var.nbu2Dir = 4
+               end
+               var.nbu2Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.tt2X, 20) and sameValue(var.pb1Y, var.tt2Y, 20) then
+            var.tt2Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/tankhurt.wav"
+            var.pb1Active = false
+            if var.tt2Health <= 0 then
+               var.tt2Active = false
+               var.turretankCount--
+               var.score = var.score + 1500
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+// Turretank 3
+   cursor20.Image = "./assets/graphics/empty.cur"
+   cursor20.Visible = var.tt3Active
+
+   if var.tt3Active then
+      cursor20.PosX = var.tt3X
+      cursor20.PosY = var.tt3Y
+
+      if var.tt3Dir = 1 then
+
+         if (var.tt3X + 16) < var.playerHitboxX then
+            var.tt3X = var.tt3X + 1
+         end
+         if (var.tt3X + 16) > var.playerHitboxX then
+            var.tt3X = var.tt3X - 1
+         end
+
+         if var.nbu3Active = false then
+            if sameValue(var.playerHitboxX, (var.tt3X + 16), 20) then
+               var.nbu3X = var.tt3X + 8
+               var.nbu3Y = var.tt3Y
+
+               if (var.tt3Y + 10) <= var.playerHitboxY then
+                  var.nbu3Dir = 3
+               end
+               if (var.tt3Y + 10) > var.playerHitboxY then
+                  var.nbu3Dir = 1
+               end
+               var.nbu3Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+
+      end
+      if var.tt3Dir = 2 then
+
+         if (var.tt3Y + 16) <= var.playerHitboxY then
+            var.tt3Y = var.tt3Y + 1
+         end
+         if (var.tt3Y + 16) > var.playerHitboxY then
+            var.tt3Y = var.tt3Y - 1
+         end
+
+         if var.nbu3Active = false then
+            if sameValue(var.playerHitboxY, (var.tt3Y + 12), 20) then
+               var.nbu3X = var.tt3X + 8
+               var.nbu3Y = var.tt3Y
+
+               if (var.tt3X + 16) < var.playerHitboxX then
+                  var.nbu3Dir = 2
+               end
+               if (var.tt3X + 16) > var.playerHitboxX then
+                  var.nbu3Dir = 4
+               end
+               var.nbu3Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.tt3X, 20) and sameValue(var.pb1Y, var.tt3Y, 20) then
+            var.tt3Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/tankhurt.wav"
+            var.pb1Active = false
+            if var.tt3Health <= 0 then
+               var.tt3Active = false
+               var.turretankCount--
+               var.score = var.score + 1500
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+// Turretank 4
+   cursor26.Image = "./assets/graphics/empty.cur"
+   cursor26.Visible = var.tt4Active
+
+   if var.tt4Active then
+      cursor26.PosX = var.tt4X
+      cursor26.PosY = var.tt4Y
+
+      if var.tt4Dir = 1 then
+
+         if (var.tt4X + 16) < var.playerHitboxX then
+            var.tt4X = var.tt4X + 1
+         end
+         if (var.tt4X + 16) > var.playerHitboxX then
+            var.tt4X = var.tt4X - 1
+         end
+
+         if var.nbu4Active = false then
+            if sameValue(var.playerHitboxX, (var.tt4X + 16), 20) then
+               var.nbu4X = var.tt4X + 8
+               var.nbu4Y = var.tt4Y
+
+               if (var.tt4Y + 10) <= var.playerHitboxY then
+                  var.nbu4Dir = 3
+               end
+               if (var.tt4Y + 10) > var.playerHitboxY then
+                  var.nbu4Dir = 1
+               end
+               var.nbu4Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+
+      end
+      if var.tt4Dir = 2 then
+
+         if (var.tt4Y + 16) <= var.playerHitboxY then
+            var.tt4Y = var.tt4Y + 1
+         end
+         if (var.tt4Y + 16) > var.playerHitboxY then
+            var.tt4Y = var.tt4Y - 1
+         end
+
+         if var.nbu4Active = false then
+            if sameValue(var.playerHitboxY, (var.tt4Y + 12), 20) then
+               var.nbu4X = var.tt4X + 8
+               var.nbu4Y = var.tt4Y
+
+               if (var.tt4X + 16) < var.playerHitboxX then
+                  var.nbu4Dir = 2
+               end
+               if (var.tt4X + 16) > var.playerHitboxX then
+                  var.nbu4Dir = 4
+               end
+               var.nbu4Active = true
+               playSound "./assets/sfx/tankshoot.wav"
+            end
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.tt4X, 20) and sameValue(var.pb1Y, var.tt4Y, 20) then
+            var.tt4Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/tankhurt.wav"
+            var.pb1Active = false
+            if var.tt4Health <= 0 then
+               var.tt4Active = false
+               var.turretankCount--
+               var.score = var.score + 1500
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+
+// Bumerang 1
+   cursor5.Image = "./assets/graphics/empty.cur"
+   cursor5.Visible = var.bm1Active
+
+   if var.bm1Active then
+      cursor5.PosX = var.bm1X
+      cursor5.PosY = var.bm1Y
+
+      if (var.bm1X + 12) < var.playerHitboxX then
+         var.bm1X = var.bm1X + 0.5
+      end
+      if (var.bm1X + 12) > var.playerHitboxX then
+         var.bm1X = var.bm1X - 0.5
+      end
+      if (var.bm1Y + 20) < var.playerHitboxY then
+         var.bm1Y = var.bm1Y + 0.5
+      end
+      if (var.bm1Y + 20) > var.playerHitboxY then
+         var.bm1Y = var.bm1Y - 0.5
+      end
+
+      if sameValue(var.playerHitboxX, var.bm1X, 100) and sameValue(var.playerHitboxY, var.bm1Y, 100) then
+         if (var.bm1X + 12) < var.playerHitboxX then
+            var.bm1X = var.bm1X - 2
+            if var.bm1X < var.leftBarrier then
+               var.bm1X = var.leftBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm1X + 12) > var.playerHitboxX then
+            var.bm1X = var.bm1X + 2
+            if var.bm1X > var.rightBarrier then
+               var.bm1X = var.rightBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm1Y + 20) < var.playerHitboxY then
+            var.bm1Y = var.bm1Y - 2
+            if var.bm1Y < var.topBarrier then
+               var.bm1Y = var.topBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm1Y + 20) > var.playerHitboxY then
+            var.bm1Y = var.bm1Y + 2
+            if var.bm1Y > var.bottomBarrier then
+               var.bm1Y = var.bottomBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+
+         if var.nbo1Active = false then
+            playSound "./assets/sfx/boomerang.wav"
+            var.nbo1TravelX = (var.playerHitboxX - var.bm1X) - 12
+            var.nbo1TravelY = (var.playerHitboxY - var.bm1Y) - 20
+            var.nbo1X = var.bm1X
+            var.nbo1Y = var.bm1Y + 8
+            var.nbo1StartX = var.bm1X
+            var.nbo1StartY = var.bm1Y
+            var.nbo1Tick = 1
+            var.nbo1LoopBack = false
+            var.nbo1Active = true
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.bm1X, 20) and sameValue(var.pb1Y, var.bm1Y, 20) then
+            var.bm1Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/bumeranghurt.wav"
+            var.pb1Active = false
+            if var.bm1Health <= 0 then
+               var.bm1Active = false
+               var.bumerangCount--
+               var.score = var.score + 2000
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+// Bumerang 2
+   cursor11.Image = "./assets/graphics/empty.cur"
+   cursor11.Visible = var.bm2Active
+
+   if var.bm2Active then
+      cursor11.PosX = var.bm2X
+      cursor11.PosY = var.bm2Y
+
+      if (var.bm2X + 12) < var.playerHitboxX then
+         var.bm2X = var.bm2X + 0.5
+      end
+      if (var.bm2X + 12) > var.playerHitboxX then
+         var.bm2X = var.bm2X - 0.5
+      end
+      if (var.bm2Y + 20) < var.playerHitboxY then
+         var.bm2Y = var.bm2Y + 0.5
+      end
+      if (var.bm2Y + 20) > var.playerHitboxY then
+         var.bm2Y = var.bm2Y - 0.5
+      end
+
+      if sameValue(var.playerHitboxX, var.bm2X, 100) and sameValue(var.playerHitboxY, var.bm2Y, 100) then
+         if (var.bm2X + 12) < var.playerHitboxX then
+            var.bm2X = var.bm2X - 2
+            if var.bm2X < var.leftBarrier then
+               var.bm2X = var.leftBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm2X + 12) > var.playerHitboxX then
+            var.bm2X = var.bm2X + 2
+            if var.bm2X > var.rightBarrier then
+               var.bm2X = var.rightBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm2Y + 20) < var.playerHitboxY then
+            var.bm2Y = var.bm2Y - 2
+            if var.bm2Y < var.topBarrier then
+               var.bm2Y = var.topBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm2Y + 20) > var.playerHitboxY then
+            var.bm2Y = var.bm2Y + 2
+            if var.bm2Y > var.bottomBarrier then
+               var.bm2Y = var.bottomBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+
+         if var.nbo1Active = false then
+            playSound "./assets/sfx/boomerang.wav"
+            var.nbo1TravelX = (var.playerHitboxX - var.bm2X) - 12
+            var.nbo1TravelY = (var.playerHitboxY - var.bm2Y) - 20
+            var.nbo1X = var.bm2X
+            var.nbo1Y = var.bm2Y + 8
+            var.nbo1StartX = var.bm2X
+            var.nbo1StartY = var.bm2Y
+            var.nbo1Tick = 1
+            var.nbo1LoopBack = false
+            var.nbo1Active = true
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.bm2X, 20) and sameValue(var.pb1Y, var.bm2Y, 20) then
+            var.bm2Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/bumeranghurt.wav"
+            var.pb1Active = false
+            if var.bm2Health <= 0 then
+               var.bm2Active = false
+               var.bumerangCount--
+               var.score = var.score + 2000
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+// Bumerang 3
+   cursor17.Image = "./assets/graphics/empty.cur"
+   cursor17.Visible = var.bm3Active
+
+   if var.bm3Active then
+      cursor17.PosX = var.bm3X
+      cursor17.PosY = var.bm3Y
+
+      if (var.bm3X + 12) < var.playerHitboxX then
+         var.bm3X = var.bm3X + 0.5
+      end
+      if (var.bm3X + 12) > var.playerHitboxX then
+         var.bm3X = var.bm3X - 0.5
+      end
+      if (var.bm3Y + 20) < var.playerHitboxY then
+         var.bm3Y = var.bm3Y + 0.5
+      end
+      if (var.bm3Y + 20) > var.playerHitboxY then
+         var.bm3Y = var.bm3Y - 0.5
+      end
+
+      if sameValue(var.playerHitboxX, var.bm3X, 100) and sameValue(var.playerHitboxY, var.bm3Y, 100) then
+         if (var.bm3X + 12) < var.playerHitboxX then
+            var.bm3X = var.bm3X - 2
+            if var.bm3X < var.leftBarrier then
+               var.bm3X = var.leftBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm3X + 12) > var.playerHitboxX then
+            var.bm3X = var.bm3X + 2
+            if var.bm3X > var.rightBarrier then
+               var.bm3X = var.rightBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm3Y + 20) < var.playerHitboxY then
+            var.bm3Y = var.bm3Y - 2
+            if var.bm3Y < var.topBarrier then
+               var.bm3Y = var.topBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm3Y + 20) > var.playerHitboxY then
+            var.bm3Y = var.bm3Y + 2
+            if var.bm3Y > var.bottomBarrier then
+               var.bm3Y = var.bottomBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+
+         if var.nbo2Active = false then
+            playSound "./assets/sfx/boomerang.wav"
+            var.nbo2TravelX = (var.playerHitboxX - var.bm3X) - 12
+            var.nbo2TravelY = (var.playerHitboxY - var.bm3Y) - 20
+            var.nbo2X = var.bm3X
+            var.nbo2Y = var.bm3Y + 8
+            var.nbo2StartX = var.bm3X
+            var.nbo2StartY = var.bm3Y
+            var.nbo2Tick = 1
+            var.nbo2LoopBack = false
+            var.nbo2Active = true
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.bm3X, 20) and sameValue(var.pb1Y, var.bm3Y, 20) then
+            var.bm3Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/bumeranghurt.wav"
+            var.pb1Active = false
+            if var.bm3Health <= 0 then
+               var.bm3Active = false
+               var.bumerangCount--
+               var.score = var.score + 2000
+            end
+            wait 0.5s
+         end
+      end
+   end
+
+
+// Bumerang 4
+   cursor23.Image = "./assets/graphics/empty.cur"
+   cursor23.Visible = var.bm4Active
+
+   if var.bm4Active then
+      cursor23.PosX = var.bm4X
+      cursor23.PosY = var.bm4Y
+
+      if (var.bm4X + 12) < var.playerHitboxX then
+         var.bm4X = var.bm4X + 0.5
+      end
+      if (var.bm4X + 12) > var.playerHitboxX then
+         var.bm4X = var.bm4X - 0.5
+      end
+      if (var.bm4Y + 20) < var.playerHitboxY then
+         var.bm4Y = var.bm4Y + 0.5
+      end
+      if (var.bm4Y + 20) > var.playerHitboxY then
+         var.bm4Y = var.bm4Y - 0.5
+      end
+
+      if sameValue(var.playerHitboxX, var.bm4X, 100) and sameValue(var.playerHitboxY, var.bm4Y, 100) then
+         if (var.bm4X + 12) < var.playerHitboxX then
+            var.bm4X = var.bm4X - 2
+            if var.bm4X < var.leftBarrier then
+               var.bm4X = var.leftBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm4X + 12) > var.playerHitboxX then
+            var.bm4X = var.bm4X + 2
+            if var.bm4X > var.rightBarrier then
+               var.bm4X = var.rightBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm4Y + 20) < var.playerHitboxY then
+            var.bm4Y = var.bm4Y - 2
+            if var.bm4Y < var.topBarrier then
+               var.bm4Y = var.topBarrier + 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+         if (var.bm4Y + 20) > var.playerHitboxY then
+            var.bm4Y = var.bm4Y + 2
+            if var.bm4Y > var.bottomBarrier then
+               var.bm4Y = var.bottomBarrier - 200
+               playSound "./assets/sfx/teleport.wav"
+            end
+         end
+
+         if var.nbo2Active = false then
+            playSound "./assets/sfx/boomerang.wav"
+            var.nbo2TravelX = (var.playerHitboxX - var.bm4X) - 12
+            var.nbo2TravelY = (var.playerHitboxY - var.bm4Y) - 20
+            var.nbo2X = var.bm4X
+            var.nbo2Y = var.bm4Y + 8
+            var.nbo2StartX = var.bm4X
+            var.nbo2StartY = var.bm4Y
+            var.nbo2Tick = 1
+            var.nbo2LoopBack = false
+            var.nbo2Active = true
+         end
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.bm4X, 20) and sameValue(var.pb1Y, var.bm4Y, 20) then
+            var.bm4Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/bumeranghurt.wav"
+            var.pb1Active = false
+            if var.bm4Health <= 0 then
+               var.bm4Active = false
+               var.bumerangCount--
+               var.score = var.score + 2000
+            end
+            wait 0.5s
+         end
+      end
+   end
+//----------
+
+
+
+// Zombie 1
+   cursor3.Image = "./assets/graphics/empty.cur"
+   cursor3.Visible = var.zb1Active
+
+   if var.zb1Active then
+      cursor3.PosX = var.zb1X
+      cursor3.PosY = var.zb1Y
+
+      if (var.zb1X + 12) < var.playerHitboxX then
+         var.zb1X = var.zb1X + var.zb1S
+      end
+      if (var.zb1X + 12) > var.playerHitboxX then
+         var.zb1X = var.zb1X - var.zb1S
+      end
+      if (var.zb1Y + 20) < var.playerHitboxY then
+         var.zb1Y = var.zb1Y + var.zb1S
+      end
+      if (var.zb1Y + 20) > var.playerHitboxY then
+         var.zb1Y = var.zb1Y - var.zb1S
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.zb1X, 20) and sameValue(var.pb1Y, var.zb1Y, 20) then
+            var.zb1Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/zombiehurt.wav"
+            var.pb1Active = false
+            if var.zb1Health <= 0 then
+               var.zb1Active = false
+               var.zombieCount--
+               var.score = var.score + 1000
+            end
+            wait 0.5s
+         end
+      end
+
+   end
+
+
+// Zombie 2
+   cursor9.Image = "./assets/graphics/empty.cur"
+   cursor9.Visible = var.zb2Active
+
+   if var.zb2Active then
+      cursor9.PosX = var.zb2X
+      cursor9.PosY = var.zb2Y
+
+      if (var.zb2X + 12) < var.playerHitboxX then
+         var.zb2X = var.zb2X + var.zb2S
+      end
+      if (var.zb2X + 12) > var.playerHitboxX then
+         var.zb2X = var.zb2X - var.zb2S
+      end
+      if (var.zb2Y + 20) < var.playerHitboxY then
+         var.zb2Y = var.zb2Y + var.zb2S
+      end
+      if (var.zb2Y + 20) > var.playerHitboxY then
+         var.zb2Y = var.zb2Y - var.zb2S
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.zb2X, 20) and sameValue(var.pb1Y, var.zb2Y, 20) then
+            var.zb2Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/zombiehurt.wav"
+            var.pb1Active = false
+            if var.zb2Health <= 0 then
+               var.zb2Active = false
+               var.zombieCount--
+               var.score = var.score + 1000
+            end
+            wait 0.5s
+         end
+      end
+
+   end
+
+
+// Zombie 3
+   cursor15.Image = "./assets/graphics/empty.cur"
+   cursor15.Visible = var.zb3Active
+
+   if var.zb3Active then
+      cursor15.PosX = var.zb3X
+      cursor15.PosY = var.zb3Y
+
+      if (var.zb3X + 12) < var.playerHitboxX then
+         var.zb3X = var.zb3X + var.zb3S
+      end
+      if (var.zb3X + 12) > var.playerHitboxX then
+         var.zb3X = var.zb3X - var.zb3S
+      end
+      if (var.zb3Y + 20) < var.playerHitboxY then
+         var.zb3Y = var.zb3Y + var.zb3S
+      end
+      if (var.zb3Y + 20) > var.playerHitboxY then
+         var.zb3Y = var.zb3Y - var.zb3S
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.zb3X, 20) and sameValue(var.pb1Y, var.zb3Y, 20) then
+            var.zb3Health--
+            var.score = var.score + 10
+            playSound "./assets/sfx/zombiehurt.wav"
+            var.pb1Active = false
+            if var.zb3Health <= 0 then
+               var.zb3Active = false
+               var.zombieCount--
+               var.score = var.score + 1000
+            end
+            wait 0.5s
+         end
+      end
+
+   end
+
+
+// Zombie 4
+   cursor21.Image = "./assets/graphics/empty.cur"
+   cursor21.Visible = var.zb4Active
+
+   if var.zb4Active then
+      cursor21.PosX = var.zb4X
+      cursor21.PosY = var.zb4Y
+
+      if (var.zb4X + 12) < var.playerHitboxX then
+         var.zb4X = var.zb4X + var.zb4S
+      end
+      if (var.zb4X + 12) > var.playerHitboxX then
+         var.zb4X = var.zb4X - var.zb4S
+      end
+      if (var.zb4Y + 20) < var.playerHitboxY then
+         var.zb4Y = var.zb4Y + var.zb4S
+      end
+      if (var.zb4Y + 20) > var.playerHitboxY then
+         var.zb4Y = var.zb4Y - var.zb4S
+      end
+
+      if var.pb1Active then
+         if sameValue(var.pb1X, var.zb4X, 20) and sameValue(var.pb1Y, var.zb4Y, 20) then
+         var.zb4Health--
+         var.score = var.score + 10
+         playSound "./assets/sfx/zombiehurt.wav"
+         var.pb1Active = false
+            if var.zb4Health <= 0 then
+               var.zb4Active = false
+               var.zombieCount--
+               var.score = var.score + 1000
+            end
+            wait 0.5s
+         end
+      end
+
+   end
+
+
+
+// Player bullet
+   cursor6.Image = "./assets/graphics/empty.cur"
+   cursor6.Visible = var.pb1Active
+
+   if var.pb1Active then
+      cursor6.PosX = var.pb1X
+      cursor6.PosY = var.pb1Y
+
+      if var.pb1Dir = 0 then
+         var.pb1Y = var.pb1Y - 10
+         cursor6.Caption = "|"
+      end
+      if var.pb1Dir = 1 then
+         var.pb1X = var.pb1X + 10
+         var.pb1Y = var.pb1Y - 10
+         cursor6.Caption = "/"
+      end
+      if var.pb1Dir = 2 then
+         var.pb1X = var.pb1X + 10
+         cursor6.Caption = "_"
+      end
+      if var.pb1Dir = 3 then
+         var.pb1X = var.pb1X + 10
+         var.pb1Y = var.pb1Y + 10
+         cursor6.Caption = "\"
+      end
+      if var.pb1Dir = 4 then
+         var.pb1Y = var.pb1Y + 10
+         cursor6.Caption = "|"
+      end
+      if var.pb1Dir = 5 then
+         var.pb1X = var.pb1X - 10
+         var.pb1Y = var.pb1Y + 10
+         cursor6.Caption = "/"
+      end
+      if var.pb1Dir = 6 then
+         var.pb1X = var.pb1X - 10
+         cursor6.Caption = "_"
+      end
+      if var.pb1Dir = 7 then
+         var.pb1X = var.pb1X - 10
+         var.pb1Y = var.pb1Y - 10
+         cursor6.Caption = "\"
+      end
+
+      if (var.pb1X > (screen.Width / 2) + 240) or (var.pb1X < (screen.Width / 2) - 240) or (var.pb1Y > (screen.Height / 2) + 180) or (var.pb1Y < (screen.Height / 2) - 180) then
+         var.pb1Active = false
+      end
+   end
+
+
+// NPC Bullet 1
+   cursor10.Image = "./assets/graphics/empty.cur"
+   cursor10.Visible = var.nbu1Active
+
+   if var.nbu1Active then
+      cursor10.PosX = var.nbu1X
+      cursor10.PosY = var.nbu1Y
+
+      if var.nbu1Dir = 1 then
+         cursor10.Caption = "|"
+         var.nbu1Y = var.nbu1Y - 5
+      end
+      if var.nbu1Dir = 2 then
+         cursor10.Caption = "-"
+         var.nbu1X = var.nbu1X + 5
+      end
+      if var.nbu1Dir = 3 then
+         cursor10.Caption = "|"
+         var.nbu1Y = var.nbu1Y + 5
+      end
+      if var.nbu1Dir = 4 then
+         cursor10.Caption = "-"
+         var.nbu1X = var.nbu1X - 5
+      end
+
+      if (var.nbu1X > (screen.Width / 2) + 240) or (var.nbu1X < (screen.Width / 2) - 240) or (var.nbu1Y > (screen.Height / 2) + 180) or (var.nbu1Y < (screen.Height / 2) - 180) then
+         var.nbu1Active = false
+      end
+   end
+
+
+// NPC Bullet 2
+   cursor16.Image = "./assets/graphics/empty.cur"
+   cursor16.Visible = var.nbu2Active
+
+   if var.nbu2Active then
+      cursor16.PosX = var.nbu2X
+      cursor16.PosY = var.nbu2Y
+
+      if var.nbu2Dir = 1 then
+         cursor16.Caption = "|"
+         var.nbu2Y = var.nbu2Y - 5
+      end
+      if var.nbu2Dir = 2 then
+         cursor16.Caption = "-"
+         var.nbu2X = var.nbu2X + 5
+      end
+      if var.nbu2Dir = 3 then
+         cursor16.Caption = "|"
+         var.nbu2Y = var.nbu2Y + 5
+      end
+      if var.nbu2Dir = 4 then
+         cursor16.Caption = "-"
+         var.nbu2X = var.nbu2X - 5
+      end
+
+      if (var.nbu2X > (screen.Width / 2) + 240) or (var.nbu2X < (screen.Width / 2) - 240) or (var.nbu2Y > (screen.Height / 2) + 180) or (var.nbu2Y < (screen.Height / 2) - 180) then
+         var.nbu2Active = false
+      end
+   end
+
+
+// NPC Bullet 3
+   cursor22.Image = "./assets/graphics/empty.cur"
+   cursor22.Visible = var.nbu3Active
+
+   if var.nbu3Active then
+      cursor22.PosX = var.nbu3X
+      cursor22.PosY = var.nbu3Y
+
+      if var.nbu3Dir = 1 then
+         cursor22.Caption = "|"
+         var.nbu3Y = var.nbu3Y - 5
+      end
+      if var.nbu3Dir = 2 then
+         cursor22.Caption = "-"
+         var.nbu3X = var.nbu3X + 5
+      end
+      if var.nbu3Dir = 3 then
+         cursor22.Caption = "|"
+         var.nbu3Y = var.nbu3Y + 5
+      end
+      if var.nbu3Dir = 4 then
+         cursor22.Caption = "-"
+         var.nbu3X = var.nbu3X - 5
+      end
+
+      if (var.nbu3X > (screen.Width / 2) + 240) or (var.nbu3X < (screen.Width / 2) - 240) or (var.nbu3Y > (screen.Height / 2) + 180) or (var.nbu3Y < (screen.Height / 2) - 180) then
+         var.nbu3Active = false
+      end
+   end
+
+
+// NPC Bullet 4
+   cursor28.Image = "./assets/graphics/empty.cur"
+   cursor28.Visible = var.nbu4Active
+
+   if var.nbu4Active then
+      cursor28.PosX = var.nbu4X
+      cursor28.PosY = var.nbu4Y
+
+      if var.nbu4Dir = 1 then
+         cursor28.Caption = "|"
+         var.nbu4Y = var.nbu4Y - 5
+      end
+      if var.nbu4Dir = 2 then
+         cursor28.Caption = "-"
+         var.nbu4X = var.nbu4X + 5
+      end
+      if var.nbu4Dir = 3 then
+         cursor28.Caption = "|"
+         var.nbu4Y = var.nbu4Y + 5
+      end
+      if var.nbu4Dir = 4 then
+         cursor28.Caption = "-"
+         var.nbu4X = var.nbu4X - 5
+      end
+
+      if (var.nbu4X > (screen.Width / 2) + 240) or (var.nbu4X < (screen.Width / 2) - 240) or (var.nbu4Y > (screen.Height / 2) + 180) or (var.nbu4Y < (screen.Height / 2) - 180) then
+         var.nbu4Active = false
+      end
+   end
+
+
+// NPC Boomerang 1
+   cursor34.Image = "./assets/graphics/empty.cur"
+   cursor34.Visible = var.nbo1Active
+
+   if var.nbo1Active then
+      cursor34.PosX = var.nbo1X
+      cursor34.PosY = var.nbo1Y
+
+      if var.nbo1LoopBack = false then
+         if var.nbo1Tick <= 10 then
+            var.nbo1Tick++
+            var.nbo1X = var.nbo1StartX + ((var.nbo1TravelX - (var.nbo1TravelX / var.nbo1Tick)) * 1.25)
+            var.nbo1Y = var.nbo1StartY + ((var.nbo1TravelY - (var.nbo1TravelY / var.nbo1Tick)) * 1.25)
+         else
+            var.nbo1LoopBack = true
+         end
+      else
+         if var.nbo1Tick >= 2 then
+            var.nbo1Tick--
+            var.nbo1X = var.nbo1StartX + ((var.nbo1TravelX - (var.nbo1TravelX / var.nbo1Tick)) * 1.25)
+            var.nbo1Y = var.nbo1StartY + ((var.nbo1TravelY - (var.nbo1TravelY / var.nbo1Tick)) * 1.25)
+         else
+            var.nbo1Active = false
+         end
+      end
+   end
+
+
+// NPC Boomerang 2
+   cursor40.Image = "./assets/graphics/empty.cur"
+   cursor40.Visible = var.nbo2Active
+
+   if var.nbo2Active then
+      cursor40.PosX = var.nbo2X
+      cursor40.PosY = var.nbo2Y
+
+      if var.nbo2LoopBack = false then
+         if var.nbo2Tick <= 10 then
+            var.nbo2Tick++
+            var.nbo2X = var.nbo2StartX + ((var.nbo2TravelX - (var.nbo2TravelX / var.nbo2Tick)) * 1.25)
+            var.nbo2Y = var.nbo2StartY + ((var.nbo2TravelY - (var.nbo2TravelY / var.nbo2Tick)) * 1.25)
+         else
+            var.nbo2LoopBack = true
+         end
+      else
+         if var.nbo2Tick >= 2 then
+            var.nbo2Tick--
+            var.nbo2X = var.nbo2StartX + ((var.nbo2TravelX - (var.nbo2TravelX / var.nbo2Tick)) * 1.25)
+            var.nbo2Y = var.nbo2StartY + ((var.nbo2TravelY - (var.nbo2TravelY / var.nbo2Tick)) * 1.25)
+         else
+            var.nbo2Active = false
+         end
+      end
+   end
+//----------
+
+
+//---------- Levels
+   if var.newLevelStart = true then
+      var.newLevelStart = false
+      var.bumerangCount = floor(var.level / 6)
+      var.turretankCount = (floor(var.level / 4)) - var.bumerangCount
+      var.zombieCount = ceil(var.level / 2) - (var.turretankCount + var.bumerangCount)
+
+      if var.zombieCount >= 1 then
+         var.zb1Health = 3
+         var.zb1Active = true
+         var.zb1X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.zb1Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.zb1S = (randomRange(5, 15)) / 10
+      end
+      if var.zombieCount >= 2 then
+         var.zb2Health = 3
+         var.zb2Active = true
+         var.zb2X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.zb2Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.zb2S = (randomRange(5, 15)) / 10
+      end
+      if var.zombieCount >= 3 then
+         var.zb3Health = 3
+         var.zb3Active = true
+         var.zb3X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.zb3Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.zb3S = (randomRange(5, 15)) / 10
+      end
+      if var.zombieCount >= 4 then
+         var.zombieCount = 4
+         var.zb4Health = 3
+         var.zb4Active = true
+         var.zb4X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.zb4Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.zb4S = (randomRange(5, 15)) / 10
+      end
+
+      if var.turretankCount >= 1 then
+         var.tt1Health = 2
+         var.tt1Active = true
+         var.tt1X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.tt1Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.tt1Dir = randomRange(1,3)
+      end
+      if var.turretankCount >= 2 then
+         var.tt2Health = 2
+         var.tt2Active = true
+         var.tt2X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.tt2Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.tt2Dir = randomRange(1,3)
+      end
+      if var.turretankCount >= 3 then
+         var.tt3Health = 2
+         var.tt3Active = true
+         var.tt3X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.tt3Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.tt3Dir = randomRange(1,3)
+      end
+      if var.turretankCount >= 4 then
+         var.turretankCount = 4
+         var.tt4Health = 2
+         var.tt4Active = true
+         var.tt4X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.tt4Y = (screen.Height / 2) + RandomRange(-180, 180)
+         var.tt4Dir = randomRange(1,3)
+      end
+
+      if var.bumerangCount >= 1 then
+         var.bm1Health = 3
+         var.bm1Active = true
+         var.bm1X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.bm1Y = (screen.Height / 2) + RandomRange(-180, 180)
+      end
+      if var.bumerangCount >= 2 then
+         var.bm2Health = 3
+         var.bm2Active = true
+         var.bm2X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.bm2Y = (screen.Height / 2) + RandomRange(-180, 180)
+      end
+      if var.bumerangCount >= 3 then
+         var.bm3Health = 3
+         var.bm3Active = true
+         var.bm3X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.bm3Y = (screen.Height / 2) + RandomRange(-180, 180)
+      end
+      if var.bumerangCount >= 4 then
+         var.bumerangCount = 4
+         var.bm4Health = 3
+         var.bm4Active = true
+         var.bm4X = (screen.Width / 2) + RandomRange(-240, 240)
+         var.bm4Y = (screen.Height / 2) + RandomRange(-180, 180)
+      end
+
+   else
+
+      if (var.zombieCount <= 0) and (var.bumerangCount <= 0) and (var.turretankCount <= 0) then
+         wait 1s
+         var.level++
+         debug = "LEVEL:" + var.level
+         if var.health < 5 then
+            var.health++
+         end
+         var.newLevelStart = true
+      end
+
+   end
+//----------
+
+
+//---------- Collision checking
+   if var.playerAir = 0 then
+
+      if var.zb1Active = true then
+         if sameValue(var.playerHitboxX, (var.zb1X + 12), 8) and sameValue(var.playerHitboxY, (var.zb1Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.zb2Active = true then
+         if sameValue(var.playerHitboxX, (var.zb2X + 12), 8) and sameValue(var.playerHitboxY, (var.zb2Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.zb3Active = true then
+         if sameValue(var.playerHitboxX, (var.zb3X + 12), 8) and sameValue(var.playerHitboxY, (var.zb3Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.zb4Active = true then
+         if sameValue(var.playerHitboxX, (var.zb4X + 12), 8) and sameValue(var.playerHitboxY, (var.zb4Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+
+      if var.tt1Active = true then
+         if sameValue(var.playerHitboxX, (var.tt1X + 16), 8) and sameValue(var.playerHitboxY, (var.tt1Y + 10), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.tt2Active = true then
+         if sameValue(var.playerHitboxX, (var.tt2X + 16), 8) and sameValue(var.playerHitboxY, (var.tt2Y + 10), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.tt3Active = true then
+         if sameValue(var.playerHitboxX, (var.tt3X + 16), 8) and sameValue(var.playerHitboxY, (var.tt3Y + 10), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.tt4Active = true then
+         if sameValue(var.playerHitboxX, (var.tt4X + 16), 8) and sameValue(var.playerHitboxY, (var.tt4Y + 10), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+
+      if var.nbu1Active = true then
+         if sameValue(var.playerHitboxX, (var.nbu1X + 12), 8) and sameValue(var.playerHitboxY, (var.nbu1Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.nbu2Active = true then
+         if sameValue(var.playerHitboxX, (var.nbu2X + 12), 8) and sameValue(var.playerHitboxY, (var.nbu2Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.nbu3Active = true then
+         if sameValue(var.playerHitboxX, (var.nbu3X + 12), 8) and sameValue(var.playerHitboxY, (var.nbu3Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.nbu4Active = true then
+         if sameValue(var.playerHitboxX, (var.nbu4X + 12), 8) and sameValue(var.playerHitboxY, (var.nbu4Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+
+      if var.nbo1Active = true then
+         if sameValue(var.playerHitboxX, (var.nbo1X + 12), 8) and sameValue(var.playerHitboxY, (var.nbo1Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+      if var.nbo2Active = true then
+         if sameValue(var.playerHitboxX, (var.nbo2X + 12), 8) and sameValue(var.playerHitboxY, (var.nbo2Y + 20), 8) then
+            var.Health--
+            playSound "./assets/sfx/hurt.wav"
+            wait 1s
+         end
+      end
+
+   end
+//----------
+
+
+end
